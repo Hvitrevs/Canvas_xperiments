@@ -22,6 +22,11 @@ addEventListener("resize", function () {
   init();
 });
 
+function randomIntFromRange(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min); 
+
+}
+
 class Particle {
   constructor (x, y, radius, color, velocity) { 
 	this.x = x;
@@ -29,7 +34,8 @@ class Particle {
 	this.radius = radius;
 	this.color = color;
   this.velocity = velocity;
-  this.ttl = 500;
+  this.ttl = 800;
+ 
   } 
 
 	draw() {
@@ -53,15 +59,16 @@ let particles
 
 function init() {
   particles = [];
-  const radius = 130
 
   for (let i = 0; i < 30; i++) {
+    const radius = (Math.random() * 9) +1;
+    
     // if full circle = pi * 2 radians
     const radian = (Math.PI * 2) / 30;
     const x = canvas.width  / 2;
     const y = canvas.height / 2;
     particles.push(
-      new Particle( x, y , 5, 'blue', {
+      new Particle( x, y , radius, `hsla(${Math.abs(hue * 360)}, 50%, 50%)`,  {
       x: Math.cos(radian * i),
       y: Math.sin(radian * i)
       })
@@ -72,21 +79,25 @@ function init() {
 }
 
 let hue = 0
+let hueRadians = 0
 function generateRing() {
-  setTimeout(generateRing, 200)
-  for (let i = 0; i < 130; i++) {
+  setTimeout(generateRing, 600)
+  hue = Math.sin(hueRadians)
+
+  for (let i = 0; i < 30; i++) {
+    const radius = (Math.random() * 9) +1;
     // if full circle = pi * 2 radians
     const radian = (Math.PI * 2) / 30;
     const x = mouse.x;
     const y = mouse.y;
     particles.push(
-      new Particle( x, y , 5, `hsla(${hue}, 50%, 50%)`, {
+      new Particle( x, y , radius, `hsla(${Math.abs(hue * 360)}, 50%, 50%)`, {
       x: Math.cos(radian * i),
       y: Math.sin(radian * i)
       })
     )
   }
-  hue += 10
+  hueRadians += 0.1
 }
 
 function animate() {
@@ -105,7 +116,7 @@ function animate() {
 }
 init(); 
 animate();
-// generateRing();
+generateRing();
 
 
 // const x = canvas.width  / 2 + Math.cos(radian * i) *  radius;
