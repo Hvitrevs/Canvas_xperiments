@@ -22,7 +22,7 @@ addEventListener("resize", function () {
   init();
 });
 
-class Object {
+class Particle {
   constructor (x, y, radius, color){ 
 	this.x = x;
 	this.y = y;
@@ -37,14 +37,19 @@ class Object {
 		c.fill();
 		c.closePath();
 	};
+  update(){
+    this.draw();
+  }
 }
+
+
 // Implementation
-let object;
+let particles;
 function init() {
-  object = [];
+  particles = [];
 
   for (let i = 0; i < 190; i++) {
-
+    particles.push(new Particle( canvas.width / 2, canvas.height / 2, 5, 'blue'))
   }
 
 }
@@ -53,10 +58,9 @@ function init() {
 function animate() {
 	requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
-  c.fillText('canvas', mouse.x, mouse.y)
 
     particles.forEach(particle => {
-      particle.update();
+      particle.draw();
   });
 }
 init(); 
