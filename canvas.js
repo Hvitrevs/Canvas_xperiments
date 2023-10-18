@@ -29,6 +29,7 @@ class Particle {
 	this.radius = radius;
 	this.color = color;
   this.velocity = velocity;
+  this.ttl = 500;
   } 
 
 	draw() {
@@ -42,6 +43,7 @@ class Particle {
     this.draw()
     this.x += this.velocity.x
     this.y += this.velocity.y
+    this.ttl--
   }
 }
 
@@ -65,35 +67,45 @@ function init() {
       })
     )
   };
+  console.log(particles)
 
 }
 
+let hue = 0
 function generateRing() {
-  setTimeout(generateRing, 1000)
-  for (let i = 0; i < 30; i++) {
+  setTimeout(generateRing, 200)
+  for (let i = 0; i < 130; i++) {
     // if full circle = pi * 2 radians
     const radian = (Math.PI * 2) / 30;
-    const x = canvas.width  / 2;
-    const y = canvas.height / 2;
+    const x = mouse.x;
+    const y = mouse.y;
     particles.push(
-      new Particle( x, y , 5, 'blue', {
+      new Particle( x, y , 5, `hsla(${hue}, 50%, 50%)`, {
       x: Math.cos(radian * i),
       y: Math.sin(radian * i)
       })
     )
-  };
+  }
+  hue += 10
 }
 
 function animate() {
 	requestAnimationFrame(animate);
-  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = 'rgba(0, 0, 0, 0.1)'
+  c.fillRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach(particle => {
+    particles.forEach((particle, i) =>
+      {
+      if (particle.ttl < 0) {
+        particles.splice(i, 1)
+      } else {
       particle.update();
-  });
+      }
+  })
 }
 init(); 
 animate();
+// generateRing();
 
 
 // const x = canvas.width  / 2 + Math.cos(radian * i) *  radius;
