@@ -54,10 +54,12 @@ class Particle {
   draw() {
     c.fillStyle = 'red';
     c.beginPath();
-    c.arc(this.x, this.y, 50, 0, Math.PI * 2);
+    c.arc(this.x, this.y, 5, 0, Math.PI * 2);
     c.fill();
   }
-  }
+}
+
+
 function init() {
   for (let i = 0; i < 100; i++) {
     particleArray.push(new Particle());
@@ -65,17 +67,22 @@ function init() {
 }
 init();
 
+
 function handleParticle(){
   for(let i = 0; i < particleArray.length; i++){
     particleArray[i].update();
     particleArray[i].draw();
   }
 }
+
+
 function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height);
   handleParticle();
   requestAnimationFrame(animate);
 }
+
+
 animate();
 
 
