@@ -5,8 +5,17 @@ const  c = canvas.getContext('2d');
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
-console.log(c);
 
+
+addEventListener('resize', function () {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+
+});
+
+window.onresize = function() {
+  location.reload();
+}
 
 const mouse = {
 	x: undefined,
@@ -25,18 +34,11 @@ addEventListener('mousemove', function (event) {
 	mouse.y = event.y; 
 });
 
-addEventListener('click', function(event) {
-  mouse.x = event.x;
-  mouse.y = event.y;
-  
-});
+// addEventListener('click', function(event) {
+//   mouse.x = event.x;
+//   mouse.y = event.y;
 
-addEventListener("resize", function () {
-	canvas.width = innerWidth;
-	canvas.height = innerHeight;
-});
-
-
+// });
 
 class Particle {
   constructor(effect) {
@@ -53,7 +55,6 @@ class Particle {
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.fill();
-    context.stroke();
   }
   update(){
     this.x += this.vx;
@@ -65,9 +66,6 @@ class Particle {
 
   }
 }
-
-
-
 
 class Effect {
   constructor(canvas){
@@ -102,10 +100,14 @@ class Effect {
         const dy = this.particles[a].y - this.particles[b].y;
         const distance = Math.hypot(dx, dy);
         if (distance < maxDistance) {
+          context.save();
+          const opacity = 1 - (distance/maxDistance);
+          context.globalAlpha = opacity;
           context.beginPath();
           context.moveTo(this.particles[a].x, this.particles[a].y);
           context.lineTo(this.particles[b].x, this.particles[b].y);
           context.stroke();
+          context.restore();
         }
       }
     }
