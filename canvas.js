@@ -9,10 +9,16 @@ console.log(c);
 
 
 const mouse = {
-	x: innerWidth / 2,
-	y: innerHeight / 2
+	x: undefined,
+	y: undefined
 };
 
+const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
+gradient.addColorStop(0, 'aquamarine');
+gradient.addColorStop(0.5, 'magenta');
+gradient.addColorStop(1, 'orange');
+c.fillStyle = gradient;
+c.strokeStyle = gradient;
 
 addEventListener('mousemove', function (event) {
 	mouse.x = event.x;
@@ -25,12 +31,9 @@ addEventListener('click', function(event) {
   
 });
 
-addEventListener('resize', function () {
+addEventListener("resize", function () {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-  const effect = new Effect(canvas);
-effect.handleParticles(c);
-
 });
 
 
@@ -38,35 +41,41 @@ effect.handleParticles(c);
 class Particle {
   constructor(effect) {
     this.effect = effect;
-    this.radius = 10;
+    this.radius = Math.random() * 5 + 1;
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = this.radius + Math.random() * (this.effect.height - this.radius * 2);
-
-
-    // this.x = Math.random() * canvas.width;
-    // this.y = Math.random() * canvas.height;
-
-  }
-
-  update(){
+    this.vx =  Math.random() * -0.3 + 0.01;
+    this.vy = Math.random() * 0.1 + 0.01;
 
   }
 
   draw(context) {
-    context.fillStyle = 'hsl('+ this.x * 0.5 + ', 100%, 50%)';
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.fill();
     context.stroke();
   }
+  update(){
+    this.x += this.vx;
+    if (this.x > this.effect.width - this.radius || this.x < this.radius) this.vx *= -1;
+    
+
+    this.y += this.vy;
+    if (this.y > this.effect.height - this.radius || this.y < this.radius) this.vy *= -1;
+
+  }
 }
+
+
+
+
 class Effect {
   constructor(canvas){
     this.canvas = canvas;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = 200;
+    this.numberOfParticles = 450;
     this.createParticles();
   }
   createParticles(){
@@ -76,17 +85,41 @@ class Effect {
   }
 
   handleParticles(context){
+    this.connectParticles(context);
     this.particles.forEach(particle => {
+      
       particle.draw(context);
-    })
+      particle.update();
+    });
+    
+  }
+
+  connectParticles(context){
+    const maxDistance = 60;
+    for (let a = 0; a< this.particles.length; a++) {
+      for (let b = a; b < this.particles.length; b++) {
+        const dx = this.particles[a].x - this.particles[b].x;
+        const dy = this.particles[a].y - this.particles[b].y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < maxDistance) {
+          context.beginPath();
+          context.moveTo(this.particles[a].x, this.particles[a].y);
+          context.lineTo(this.particles[b].x, this.particles[b].y);
+          context.stroke();
+        }
+      }
+    }
   }
 }
+
 const effect = new Effect(canvas);
-effect.handleParticles(c);
+
 
 function animate() {
-  // c.clearRect(0, 0, canvas.width, canvas.height);
-  // requestAnimationFrame(animate);
+
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  effect.handleParticles(c);
+  requestAnimationFrame(animate);
 }
 
 
