@@ -81,13 +81,20 @@ class Effect {
       radius: 120
     }
 
-    window.addEventListener('', e => {
+    window.addEventListener('mousemove', e => {
+      if (this.mouse.reseed){
+        this.mouse.x = e.x;
+        this.mouse.y = e.y;
+      }
+    });
+    window.addEventListener('mouseup', e => {
+      this.mouse.pressed = false;
 
     });
-    window.addEventListener('', e => {
-
-    });
-    window.addEventListener('', e => {
+    window.addEventListener('mousedown', e => {
+      this.mouse.pressed = true;
+      this.mouse.x = e.x;
+      this.mouse.y = e.y;
 
     });
   }
