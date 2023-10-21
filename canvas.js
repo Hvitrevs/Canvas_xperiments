@@ -22,22 +22,12 @@ const mouse = {
 };
 
 const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
-gradient.addColorStop(0, 'aquamarine');
-gradient.addColorStop(0.5, 'magenta');
-gradient.addColorStop(1, 'orange');
+gradient.addColorStop(0, 'hsla(35, 40.90%, 51.60%, 0.48)');
+gradient.addColorStop(0.5, 'hsla(216, 68.80%, 31.40%, 0.64)');
+gradient.addColorStop(1, 'hsla(166, 58.90%, 22.00%, 0.64)');
 c.fillStyle = gradient;
 c.strokeStyle = gradient;
 
-// addEventListener('mousemove', function (event) {
-// 	mouse.x = event.x;
-// 	mouse.y = event.y; 
-// });
-
-// addEventListener('click', function(event) {
-//   mouse.x = event.x;
-//   mouse.y = event.y;
-
-// });
 
 class Particle {
   constructor(effect) {
@@ -61,6 +51,7 @@ class Particle {
       const dx = this.x - this.effect.mouse.x;
       const dy = this.y - this.effect.mouse.y;
       const distance = Math.hypot(dx, dy);
+      const force = this.effect.mouse.radius / distance;
       if (distance < this.effect.mouse.radius){
         const angle = Math.atan2(dy, dx);
         this.x += Math.cos(angle);
@@ -68,14 +59,24 @@ class Particle {
       }
     }
 
+    if (this.x < this.radius){
+      this.x = this.radius;
+      this.vx *= -1;
+    } else if( this.x > this.effect.width - this.radius){
+      this.x = this.effect.width - this.radius;
+      this.vx *= -1;
+    }
+    if (this.y < this.radius){
+      this.y = this.radius;
+      this.vy *= -1;
+    } else if( this.y > this.effect.height - this.radius){
+      this.y = this.effect.height - this.radius;
+      this.vy *= -1;
+    }
     this.x += this.vx;
-    if (this.x > this.effect.width - this.radius || this.x < this.radius) this.vx *= -1;
-    
-
     this.y += this.vy;
-    if (this.y > this.effect.height - this.radius || this.y < this.radius) this.vy *= -1;
-
   }
+
 }
 
 class Effect {
@@ -86,11 +87,13 @@ class Effect {
     this.particles = [];
     this.numberOfParticles = 450;
     this.createParticles();
+
+    // particle pusharound
     this.mouse = {
       x: 0,
       y:0,
       pressed: false,
-      radius: 120
+      radius: 220
     }
 
     window.addEventListener('mousemove', e => {
@@ -109,7 +112,12 @@ class Effect {
       this.mouse.y = e.y;
 
     });
+
   }
+
+
+
+
   createParticles(){
     for(let i =0; i < this.numberOfParticles; i++){
       this.particles.push(new Particle(this));
