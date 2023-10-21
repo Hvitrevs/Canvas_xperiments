@@ -32,11 +32,14 @@ c.strokeStyle = gradient;
 class Particle {
   constructor(effect) {
     this.effect = effect;
-    this.radius = Math.random() * 5 + 1;
+    this.radius = Math.floor(Math.random() * 5 + 1);
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = this.radius + Math.random() * (this.effect.height - this.radius * 2);
-    this.vx =  Math.random() * -0.3 + 0.01;
-    this.vy = Math.random() * 0.1 + 0.01;
+    this.vx =  Math.random() * 0.5 - 0.1;
+    this.vy = Math.random() * 0.1  - 0.01;
+    this.pushX = 0;
+    this.pushY = 0;
+    this.friction = Math.random() * 0.5 + 0.4;
 
   }
 
@@ -51,13 +54,17 @@ class Particle {
       const dx = this.x - this.effect.mouse.x;
       const dy = this.y - this.effect.mouse.y;
       const distance = Math.hypot(dx, dy);
-      const force = this.effect.mouse.radius / distance;
+      const force = (this.effect.mouse.radius / distance);
       if (distance < this.effect.mouse.radius){
         const angle = Math.atan2(dy, dx);
-        this.x += Math.cos(angle);
-        this.y += Math.sin(angle);
+        this.pushX += Math.cos(angle) * force;
+        this.pushY += Math.sin(angle) * force;
+
       }
+
     }
+    this.x += (this.pushX *= this.friction) + this.vx;
+    this.y += (this.pushY *= this.friction) + this.vy;
 
     if (this.x < this.radius){
       this.x = this.radius;
@@ -73,8 +80,7 @@ class Particle {
       this.y = this.effect.height - this.radius;
       this.vy *= -1;
     }
-    this.x += this.vx;
-    this.y += this.vy;
+
   }
 
 }
