@@ -1,5 +1,4 @@
 
-
 const canvas = document.querySelector('canvas');
 const  c = canvas.getContext('2d');
 
@@ -29,10 +28,10 @@ gradient.addColorStop(1, 'orange');
 c.fillStyle = gradient;
 c.strokeStyle = gradient;
 
-addEventListener('mousemove', function (event) {
-	mouse.x = event.x;
-	mouse.y = event.y; 
-});
+// addEventListener('mousemove', function (event) {
+// 	mouse.x = event.x;
+// 	mouse.y = event.y; 
+// });
 
 // addEventListener('click', function(event) {
 //   mouse.x = event.x;
@@ -75,6 +74,22 @@ class Effect {
     this.particles = [];
     this.numberOfParticles = 450;
     this.createParticles();
+    this.mouse = {
+      x: 0,
+      y:0,
+      pressed: false,
+      radius: 120
+    }
+
+    window.addEventListener('', e => {
+
+    });
+    window.addEventListener('', e => {
+
+    });
+    window.addEventListener('', e => {
+
+    });
   }
   createParticles(){
     for(let i =0; i < this.numberOfParticles; i++){
@@ -125,6 +140,6 @@ function animate() {
 }
 
 
-animate();
+// animate();
 
 
