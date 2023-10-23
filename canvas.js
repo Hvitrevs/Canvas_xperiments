@@ -22,9 +22,9 @@ const mouse = {
 };
 
 const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
-gradient.addColorStop(0, 'hsla(35, 40.90%, 51.60%, 0.48)');
-gradient.addColorStop(0.5, 'hsla(216, 68.80%, 31.40%, 0.64)');
-gradient.addColorStop(1, 'hsla(166, 58.90%, 22.00%, 0.64)');
+gradient.addColorStop(0, 'hsla(178, 77.50%, 63.30%, 0.89)');
+gradient.addColorStop(0.5, 'hsl(216, 66.10%, 49.80%)');
+gradient.addColorStop(1, 'hsl(166, 70.90%, 49.80%)');
 c.fillStyle = gradient;
 c.strokeStyle = gradient;
 
@@ -82,6 +82,10 @@ class Particle {
     }
 
   }
+  reset(){
+    this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
+    this. y = this.radius + Math.random() * ( this.effect.height - this.radius * 2);
+  }
 
 }
 
@@ -93,6 +97,7 @@ class Effect {
     this.particles = [];
     this.numberOfParticles = 450;
     this.createParticles();
+    this.debug = true;
 
     // particle pusharound
     this.mouse = {
@@ -101,6 +106,9 @@ class Effect {
       pressed: false,
       radius: 220
     }
+    window.addEventListener('resise', e=> {
+      this.resize(e.target.window.innerWidth, e.target.window.innerHeight);
+    })
 
     window.addEventListener('mousemove', e => {
       if (this.mouse.reseed){
@@ -120,8 +128,6 @@ class Effect {
     });
 
   }
-
-
 
 
   createParticles(){
@@ -160,6 +166,22 @@ class Effect {
       }
     }
   }
+  resize(width, height) {
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.width = width;
+    this.height = height;
+    const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, 'hsla(178, 77.50%, 63.30%, 0.89)');
+    gradient.addColorStop(0.5, 'hsl(216, 66.10%, 49.80%)');
+    gradient.addColorStop(1, 'hsl(166, 70.90%, 49.80%)');
+    this.context.fillStyle = gradient;
+    this.context.strokeStyle = gradient;
+    this.particles.forEach(particle => {
+      particle.reset();
+    });
+  }
+
 }
 
 const effect = new Effect(canvas);
