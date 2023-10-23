@@ -22,9 +22,9 @@ const mouse = {
 };
 
 const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
-gradient.addColorStop(0, 'hsla(178, 77.50%, 63.30%, 0.89)');
-gradient.addColorStop(0.5, 'hsl(216, 66.10%, 49.80%)');
-gradient.addColorStop(1, 'hsl(166, 70.90%, 49.80%)');
+gradient.addColorStop(0, 'hsla(329, 78.50%, 87.30%, 0.71)');
+gradient.addColorStop(0.5, 'hsla(295, 57.70%, 62.90%, 0.40)');
+gradient.addColorStop(1, 'hsla(251, 100.00%, 91.20%, 0.60)');
 c.fillStyle = gradient;
 c.strokeStyle = gradient;
 
@@ -172,9 +172,9 @@ class Effect {
     this.width = width;
     this.height = height;
     const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, 'hsla(178, 77.50%, 63.30%, 0.89)');
-    gradient.addColorStop(0.5, 'hsl(216, 66.10%, 49.80%)');
-    gradient.addColorStop(1, 'hsl(166, 70.90%, 49.80%)');
+    gradient.addColorStop(0, 'hsla(329, 78.50%, 87.30%, 0.71)');
+    gradient.addColorStop(0.5, 'hsla(295, 57.70%, 62.90%, 0.40)');
+    gradient.addColorStop(1, 'hsla(251, 100.00%, 91.20%, 0.60)');
     this.context.fillStyle = gradient;
     this.context.strokeStyle = gradient;
     this.particles.forEach(particle => {
@@ -195,6 +195,6 @@ function animate() {
 }
 
 
-// animate();
+animate();
 
 
