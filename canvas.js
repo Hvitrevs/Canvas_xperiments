@@ -22,8 +22,8 @@ const mouse = {
 };
 
 const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
-gradient.addColorStop(0, 'hsla(329, 78.50%, 87.30%, 0.71)');
-gradient.addColorStop(0.5, 'hsla(295, 57.70%, 62.90%, 0.40)');
+gradient.addColorStop(0, 'hsla(329, 88.70%, 72.40%, 0.71)');
+gradient.addColorStop(0.5, 'hsla(295, 61.60%, 29.60%, 0.40)');
 gradient.addColorStop(1, 'hsla(251, 100.00%, 91.20%, 0.60)');
 c.fillStyle = gradient;
 c.strokeStyle = gradient;
@@ -32,9 +32,9 @@ c.strokeStyle = gradient;
 class Particle {
   constructor(effect) {
     this.effect = effect;
-    this.radius = Math.floor(Math.random() * 5 + 1);
+    this.radius = Math.floor(Math.random() * 7 + 1);
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
-    this.y = -this.radius + Math.random() * this.effect.height * 0.5;
+    this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
     this.vx =  Math.random() * 0.5 - 0.1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
@@ -53,14 +53,14 @@ class Particle {
     this.x +=  this.vx;
     this.y += this.vy;
 
-    if( this.y > this.effect.height - this.radius){
+    if( this.y > this.effect.height + this.radius + this.effect.maxDistance || this.x < -this.radius - this.effect.maxDistance || this.x > this.effect.width + this.radius + this.effect.maxDistance){
       this.reset();
     }
 
   }
   reset(){
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
-    this.y = -this.radius + Math.random() * this.effect.height * 0.5;
+    this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
     this.vy = 0;
   }
 
@@ -72,7 +72,7 @@ class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = 450;
+    this.numberOfParticles = 550;
     this.createParticles();
     this.debug = true;
 
@@ -108,7 +108,7 @@ class Effect {
 
 
   createParticles(){
-    for(let i =0; i < this.numberOfParticles; i++){
+    for(let i = 0; i < this.numberOfParticles; i++){
       this.particles.push(new Particle(this));
     }
   }
@@ -124,15 +124,15 @@ class Effect {
   }
 
   connectParticles(context){
-    const maxDistance = 60;
+    this.maxDistance = 150;
     for (let a = 0; a< this.particles.length; a++) {
       for (let b = a; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
         const dy = this.particles[a].y - this.particles[b].y;
         const distance = Math.hypot(dx, dy);
-        if (distance < maxDistance) {
+        if (distance < this.maxDistance) {
           context.save();
-          const opacity = 1 - (distance/maxDistance);
+          const opacity = 1 - (distance/this.maxDistance);
           context.globalAlpha = opacity;
           context.beginPath();
           context.moveTo(this.particles[a].x, this.particles[a].y);
@@ -172,6 +172,6 @@ function animate() {
 }
 
 
-animate();
+// animate();
 
 
