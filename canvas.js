@@ -34,7 +34,7 @@ class Particle {
     this.effect = effect;
     this.radius = Math.floor(Math.random() * 5 + 1);
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
-    this.y = this.radius + Math.random() * (this.effect.height - this.radius * 2);
+    this.y = -this.radius + Math.random() * this.effect.height * 0.5;
     this.vx =  Math.random() * 0.5 - 0.1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
@@ -49,29 +49,19 @@ class Particle {
     context.fill();
   }
   update(){
-
+    this.vy += this.gravity;
     this.x +=  this.vx;
     this.y += this.vy;
 
-    if (this.x < this.radius){
-      this.x = this.radius;
-      this.vx *= -1;
-    } else if( this.x > this.effect.width - this.radius){
-      this.x = this.effect.width - this.radius;
-      this.vx *= -1;
-    }
-    if (this.y < this.radius){
-      this.y = this.radius;
-      this.vy *= -1;
-    } else if( this.y > this.effect.height - this.radius){
-      this.y = this.effect.height - this.radius;
-      this.vy *= -1;
+    if( this.y > this.effect.height - this.radius){
+      this.reset();
     }
 
   }
   reset(){
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
-    this. y = this.radius + Math.random() * ( this.effect.height - this.radius * 2);
+    this.y = -this.radius + Math.random() * this.effect.height * 0.5;
+    this.vy = 0;
   }
 
 }
@@ -182,6 +172,6 @@ function animate() {
 }
 
 
-// animate();
+animate();
 
 
