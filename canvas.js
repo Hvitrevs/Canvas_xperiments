@@ -36,9 +36,9 @@ class Particle {
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = this.radius + Math.random() * (this.effect.height - this.radius * 2);
     this.vx =  Math.random() * 0.5 - 0.1;
-    this.vy = Math.random() * 0.1  - 0.01;
-    this.pushX = 0;
-    this.pushY = 0;
+    this.vy = 0;
+    this.gravity = this.radius * 0.001;
+
     this.friction = Math.random() * 0.5 + 0.4;
 
   }
@@ -50,21 +50,8 @@ class Particle {
   }
   update(){
 
-    if (this.effect.mouse.pressed){
-      const dx = this.x - this.effect.mouse.x;
-      const dy = this.y - this.effect.mouse.y;
-      const distance = Math.hypot(dx, dy);
-      const force = (this.effect.mouse.radius / distance);
-      if (distance < this.effect.mouse.radius){
-        const angle = Math.atan2(dy, dx);
-        this.pushX += Math.cos(angle) * force;
-        this.pushY += Math.sin(angle) * force;
-
-      }
-
-    }
-    this.x += (this.pushX *= this.friction) + this.vx;
-    this.y += (this.pushY *= this.friction) + this.vy;
+    this.x +=  this.vx;
+    this.y += this.vy;
 
     if (this.x < this.radius){
       this.x = this.radius;
@@ -108,7 +95,7 @@ class Effect {
     }
     window.addEventListener('resise', e=> {
       this.resize(e.target.window.innerWidth, e.target.window.innerHeight);
-    })
+    });
 
     window.addEventListener('mousemove', e => {
       if (this.mouse.reseed){
@@ -184,7 +171,7 @@ class Effect {
 
 }
 
-const effect = new Effect(canvas);
+const effect = new Effect(canvas, c);
 
 
 function animate() {
@@ -195,6 +182,6 @@ function animate() {
 }
 
 
-animate();
+// animate();
 
 
