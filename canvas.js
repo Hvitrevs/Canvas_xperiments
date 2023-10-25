@@ -75,6 +75,8 @@ class Effect {
     this.numberOfParticles = 550;
     this.createParticles();
     this.debug = true;
+    this.element = document.querySelector('h1').getBoundingClientRect();
+    console.log(this.element);
 
     // particle pusharound
     this.mouse = {
@@ -83,6 +85,13 @@ class Effect {
       pressed: false,
       radius: 220
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'd'){
+        this.debug = !this.debug;
+        
+      }
+    })
     window.addEventListener('resise', e=> {
       this.resize(e.target.window.innerWidth, e.target.window.innerHeight);
     });
@@ -120,6 +129,9 @@ class Effect {
       particle.draw(context);
       particle.update();
     });
+    if (this.debug){
+      context.strokeRect(this.element.x, this.element.y, this.element.width, this.element.height);
+    }
     
   }
 
