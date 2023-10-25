@@ -34,7 +34,7 @@ class Particle {
     this.effect = effect;
     this.radius = Math.floor(Math.random() * 7 + 1);
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
-    this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
+    this.y = - Math.random() * this.effect.height * 0.5;
     this.vx =  Math.random() * 0.5 - 0.1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
@@ -47,6 +47,9 @@ class Particle {
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.fill();
+    if (this.effect.debug){
+      context.strokeRect(this.x, this.y, this.radius * 2, this.radius * 2)
+    }
   }
   update(){
     this.vy += this.gravity;
@@ -75,7 +78,7 @@ class Effect {
     this.numberOfParticles = 550;
     this.createParticles();
     this.debug = true;
-    this.element = document.querySelector('h1').getBoundingClientRect();
+    this.element = document.getElementById('hh1').getBoundingClientRect();
     console.log(this.element);
 
     // particle pusharound
