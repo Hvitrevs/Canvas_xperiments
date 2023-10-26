@@ -38,7 +38,7 @@ class Particle {
     this.vx =  Math.random() * 0.5 - 0.1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
-
+    this.width = this.radius * 2;
     this.friction = Math.random() * 0.5 + 0.4;
 
   }
@@ -62,19 +62,19 @@ class Particle {
 
     // collision
     if (
-      rect1.x < rect2.x + rect2.w &&
-      rect1.x + rect1.w > rect2.x &&
-      rect1.y < rect2.y + rect2.h &&
-      rect1.h + rect1.y > rect2.y 
+      this.x - this.radius < this.effect.element.x + this.effect.element.width &&
+      this.x - this.radius + this.width > this.effect.element.x &&
+      this.y < this.effect.element.y + this.effect.element.height &&
+      this.height + this.y > this.effect.element.y 
     ) {
       this.color('red');
 
     } else {
       this.color('blue');
     }
-
-
   }
+
+
   reset(){
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
