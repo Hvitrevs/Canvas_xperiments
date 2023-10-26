@@ -39,7 +39,9 @@ class Particle {
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.width = this.radius * 2;
+    this.height = this.radius * 2;
     this.friction = Math.random() * 0.5 + 0.4;
+    this.color = 'white';
 
   }
 
@@ -48,7 +50,8 @@ class Particle {
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.fill();
     if (this.effect.debug){
-      context.strokeRect(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
+      context.fillStyle = this.color;
+      context.fillRect(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
     }
   }
   update(){
@@ -67,10 +70,10 @@ class Particle {
       this.y < this.effect.element.y + this.effect.element.height &&
       this.height + this.y > this.effect.element.y 
     ) {
-      this.color('red');
+      this.color = 'red';
 
     } else {
-      this.color('blue');
+      this.color = 'blue';
     }
   }
 
@@ -201,6 +204,6 @@ function animate() {
 }
 
 
-animate();
+// animate();
 
 
