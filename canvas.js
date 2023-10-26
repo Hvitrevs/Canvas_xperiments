@@ -48,7 +48,7 @@ class Particle {
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.fill();
     if (this.effect.debug){
-      context.strokeRect(this.x, this.y, this.radius * 2, this.radius * 2)
+      context.strokeRect(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
     }
   }
   update(){
@@ -59,6 +59,20 @@ class Particle {
     if( this.y > this.effect.height + this.radius + this.effect.maxDistance || this.x < -this.radius - this.effect.maxDistance || this.x > this.effect.width + this.radius + this.effect.maxDistance){
       this.reset();
     }
+
+    // collision
+    if (
+      rect1.x < rect2.x + rect2.w &&
+      rect1.x + rect1.w > rect2.x &&
+      rect1.y < rect2.y + rect2.h &&
+      rect1.h + rect1.y > rect2.y 
+    ) {
+      this.color('red');
+
+    } else {
+      this.color('blue');
+    }
+
 
   }
   reset(){
@@ -187,6 +201,6 @@ function animate() {
 }
 
 
-// animate();
+animate();
 
 
