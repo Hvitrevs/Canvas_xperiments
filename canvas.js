@@ -34,12 +34,13 @@ class Particle {
     this.radius = Math.floor(Math.random() * 7 + 1);
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = - Math.random() * this.effect.height * 0.5;
-    this.vx =  Math.random() * 0.5 - 0.1;
+    this.vx =  Math.random() * 2 - 1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.width = this.radius * 2;
     this.height = this.radius * 2;
     this.friction = Math.random() * 0.5 + 0.4;
+    this.bounced = 0;
   }
 
   draw(context) {
@@ -65,17 +66,22 @@ class Particle {
       this.x - this.radius + this.width > this.effect.element.x &&
       this.y - this.radius < this.effect.element.y + 5 &&
       this.height + this.y - this.radius > this.effect.element.y 
+      && this.bounced < 6
     ) {
       // collided!
 
       this.vy *= -0.5;
       this.y = this.effect.element.y - this.radius;
+      this.bounced++;
+      this.vx *= 1.5;
     } 
   }
   reset(){
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
     this.vy = 0;
+    this.bounced = 0;
+    this.vx =  Math.random() * 2 - 1;
   }
 }
 
@@ -87,7 +93,7 @@ class Effect {
     this.particles = [];
     this.numberOfParticles = 550;
     this.createParticles();
-    this.debug = true;
+    this.debug = false;
     this.element = document.getElementById('hh1').getBoundingClientRect();
     console.log(this.element);
     this.mouse = {
