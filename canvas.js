@@ -9,7 +9,6 @@ canvas.height = innerHeight;
 addEventListener('resize', function () {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-
 });
 
 window.onresize = function() {
@@ -41,7 +40,6 @@ class Particle {
     this.width = this.radius * 2;
     this.height = this.radius * 2;
     this.friction = Math.random() * 0.5 + 0.4;
-
   }
 
   draw(context) {
@@ -71,14 +69,11 @@ class Particle {
       this.vy *= -1;
     } 
   }
-
-
   reset(){
     this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
     this.vy = 0;
   }
-
 }
 
 class Effect {
@@ -92,34 +87,32 @@ class Effect {
     this.debug = true;
     this.element = document.getElementById('hh1').getBoundingClientRect();
     console.log(this.element);
-
     this.mouse = {
       x: 0,
       y:0,
       pressed: false,
       radius: 220
     }
-
     window.addEventListener('keydown', e => {
       if (e.key === 'd'){
         this.debug = !this.debug;
-        
       }
     })
-    window.addEventListener('resise', e=> {
+    
+    window.addEventListener('resise', e => {
       this.resize(e.target.window.innerWidth, e.target.window.innerHeight);
     });
 
     window.addEventListener('mousemove', e => {
-      if (this.mouse.reseed){
+      if (this.mouse.pressed){
         this.mouse.x = e.x;
         this.mouse.y = e.y;
       }
     });
     window.addEventListener('mouseup', e => {
       this.mouse.pressed = false;
-
     });
+    
     window.addEventListener('mousedown', e => {
       this.mouse.pressed = true;
       this.mouse.x = e.x;
