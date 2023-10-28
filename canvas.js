@@ -63,10 +63,13 @@ class Particle {
     if (
       this.x - this.radius < this.effect.element.x + this.effect.element.width &&
       this.x - this.radius + this.width > this.effect.element.x &&
-      this.y < this.effect.element.y + 5 &&
-      this.height + this.y > this.effect.element.y 
+      this.y - this.radius < this.effect.element.y + 5 &&
+      this.height + this.y - this.radius > this.effect.element.y 
     ) {
-      this.vy *= -1;
+      // collided!
+
+      this.vy *= -0.5;
+      this.y = this.effect.element.y - this.radius;
     } 
   }
   reset(){
@@ -117,9 +120,7 @@ class Effect {
       this.mouse.pressed = true;
       this.mouse.x = e.x;
       this.mouse.y = e.y;
-
     });
-
   }
 
 
@@ -139,7 +140,6 @@ class Effect {
     if (this.debug){
       context.strokeRect(this.element.x, this.element.y, this.element.width, this.element.height);
     }
-    
   }
 
   connectParticles(context){
@@ -167,6 +167,7 @@ class Effect {
     this.canvas.height = height;
     this.width = width;
     this.height = height;
+    this.element = document.getElementById('hh1').getBoundingClientRect();
     const gradient = c.createLinearGradient(0, 0, canvas.width, canvas.height);
     gradient.addColorStop(0, 'hsla(329, 78.50%, 87.30%, 0.71)');
     gradient.addColorStop(0.5, 'hsla(295, 57.70%, 62.90%, 0.40)');
@@ -177,11 +178,9 @@ class Effect {
       particle.reset();
     });
   }
-
 }
 
 const effect = new Effect(canvas, c);
-
 
 function animate() {
 
