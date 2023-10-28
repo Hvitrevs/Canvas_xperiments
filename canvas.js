@@ -32,9 +32,9 @@ class Particle {
   constructor(effect) {
     this.effect = effect;
     this.radius = Math.floor(Math.random() * 7 + 1);
-    this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
+    this.x = this.effect.element.x + this.effect.element.width * 1.5;
     this.y = - Math.random() * this.effect.height * 0.5;
-    this.vx =  Math.random() * 2 - 1;
+    this.vx =  Math.random() * -2;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.width = this.radius * 2;
@@ -73,15 +73,16 @@ class Particle {
       this.vy *= -0.5;
       this.y = this.effect.element.y - this.radius;
       this.bounced++;
-      this.vx *= 1.5;
+
     } 
   }
   reset(){
-    this.x = this.radius + Math.random() * (this.effect.width - this.radius * 2);
+    this.x = this.effect.element.x + this.effect.element.width * 1.5;
     this.y = -this.radius - this.effect.maxDistance - Math.random() * this.effect.height * 0.2;
+    this.vx =  Math.random() * -2;
     this.vy = 0;
     this.bounced = 0;
-    this.vx =  Math.random() * 2 - 1;
+
   }
 }
 
@@ -90,12 +91,11 @@ class Effect {
     this.canvas = canvas;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
-    this.particles = [];
-    this.numberOfParticles = 550;
-    this.createParticles();
     this.debug = false;
     this.element = document.getElementById('hh1').getBoundingClientRect();
-    console.log(this.element);
+    this.particles = [];
+    this.numberOfParticles = 350;
+    this.createParticles();
     this.mouse = {
       x: 0,
       y:0,
@@ -149,7 +149,7 @@ class Effect {
   }
 
   connectParticles(context){
-    this.maxDistance = 150;
+    this.maxDistance = 50;
     for (let a = 0; a< this.particles.length; a++) {
       for (let b = a; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
@@ -196,6 +196,6 @@ function animate() {
 }
 
 
-// animate();
+animate();
 
 
